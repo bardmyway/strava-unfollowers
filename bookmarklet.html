@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strava Unfollowers - Installation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1f25 100%);
+            min-height: 100vh;
+            color: #e6edf3;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .container { max-width: 800px; width: 100%; }
+        
+        .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; }
+        .logo { width: 64px; height: 64px; }
+        .title-group h1 { font-size: 2rem; font-weight: 700; color: #fc5200; }
+        .title-group p { color: #8b949e; }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .bookmarklet-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fc5200 0%, #e04800 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            cursor: grab;
+            box-shadow: 0 4px 20px rgba(252, 82, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+        
+        .bookmarklet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(252, 82, 0, 0.4);
+        }
+
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .copy-btn:hover { background: rgba(255,255,255,0.15); border-color: white; }
+        
+        .instruction {
+            background: rgba(252, 82, 0, 0.1);
+            border-left: 3px solid #fc5200;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            color: #ffcea8;
+        }
+
+        .success-message {
+            color: #2ea043;
+            margin-top: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: bold;
+            height: 1.5rem;
+        }
+        
+        .disclaimer {
+            font-size: 0.8rem;
+            color: #6e7681;
+            text-align: center;
+            margin-top: 3rem;
+            line-height: 1.5;
+        }
+
+        ol { margin-left: 1.5rem; color: #8b949e; line-height: 1.8; }
+        li { margin-bottom: 0.5rem; }
+        a { color: #fc5200; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <svg class="logo" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="30" fill="#fc5200"/>
+                <path d="M32 16L24 44h6l2-12 2 12h6L32 16z" fill="white"/>
+            </svg>
+            <div class="title-group">
+                <h1>Strava Unfollowers</h1>
+                <p>Find who doesn't follow you back</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📌 Method 1: Bookmarklet (Easiest)</h2>
+            <p style="margin: 1rem 0; color: #8b949e;">Drag this button to your bookmarks bar:</p>
+            
+            <div style="text-align: center;">
+                <a class="bookmarklet-btn" href="javascript:(function(){var s=document.createElement('script');s.src='https://raw.githubusercontent.com/bardmyway/strava-unfollowers/main/strava-unfollowers.js?v='+Date.now();document.body.appendChild(s);})();">
+                    🏃 Strava Unfollowers
+                </a>
+            </div>
+            
+            <div class="instruction">
+                <strong>⬆️ Drag the button above to your Bookmarks Bar</strong>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Method 2: Manual Copy</h2>
+            <p style="margin: 1rem 0; color: #8b949e;">Click below to copy the script code automatically:</p>
+            
+            <div style="text-align: center;">
+                <button class="copy-btn" onclick="copyScript()">📋 Copy Script Code</button>
+                <div id="copy-status" class="success-message">✓ Copied to clipboard!</div>
+            </div>
+
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: #8b949e; text-align: center;">
+                Trust Check: <a href="https://raw.githubusercontent.com/bardmyway/strava-unfollowers/main/strava-unfollowers.js" target="_blank">View raw source code</a> to verify it is safe.
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>🖥️ How to Use</h2>
+            <ol>
+                <li>Log in to <a href="https://www.strava.com" target="_blank">Strava.com</a></li>
+                <li><strong>Method 1:</strong> Click the bookmark you just created.</li>
+                <li><strong>Method 2:</strong> Open Developer Console (<code>Cmd+Option+J</code> or <code>Ctrl+Shift+J</code>) and paste the code.</li>
+            </ol>
+        </div>
+
+        <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> This tool is not affiliated, associated, authorized, endorsed by, or officially connected with Strava Inc.</p>
+            <p>© 2025 bardmyway. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        async function copyScript() {
+            const statusEl = document.getElementById('copy-status');
+            try {
+                // Fetches the raw code from your repo so it's always up to date
+                const response = await fetch('https://raw.githubusercontent.com/bardmyway/strava-unfollowers/main/strava-unfollowers.js');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const text = await response.text();
+                
+                await navigator.clipboard.writeText(text);
+                
+                statusEl.style.opacity = '1';
+                setTimeout(() => { statusEl.style.opacity = '0'; }, 3000);
+            } catch (err) {
+                console.error('Failed to copy', err);
+                statusEl.textContent = '❌ Failed to copy. Please use the "View raw source" link.';
+                statusEl.style.color = '#da3633';
+                statusEl.style.opacity = '1';
+            }
+        }
+    </script>
+</body>
+</html>

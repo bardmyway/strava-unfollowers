@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strava Unfollowers - Bookmarklet</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1f25 100%);
+            min-height: 100vh;
+            color: #e6edf3;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .logo {
+            width: 64px;
+            height: 64px;
+        }
+        
+        .title-group h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fc5200;
+        }
+        
+        .title-group p {
+            color: #8b949e;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #e6edf3;
+        }
+        
+        .section p {
+            color: #8b949e;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .bookmarklet-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #fc5200 0%, #e04800 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            cursor: grab;
+        }
+        
+        .bookmarklet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(252, 82, 0, 0.4);
+        }
+        
+        .instruction {
+            background: rgba(252, 82, 0, 0.1);
+            border-left: 3px solid #fc5200;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .steps {
+            list-style: none;
+            counter-reset: step;
+        }
+        
+        .steps li {
+            counter-increment: step;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .steps li::before {
+            content: counter(step);
+            background: #fc5200;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .steps li:last-child {
+            border-bottom: none;
+        }
+        
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .warning {
+            background: rgba(218, 54, 51, 0.1);
+            border: 1px solid rgba(218, 54, 51, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .warning h3 {
+            color: #da3633;
+            margin-bottom: 0.5rem;
+        }
+        
+        .warning p {
+            color: #f0b8b8;
+            margin: 0;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+        
+        .footer a {
+            color: #fc5200;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <svg class="logo" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="30" fill="#fc5200"/>
+                <path d="M32 16L24 44h6l2-12 2 12h6L32 16z" fill="white"/>
+                <path d="M32 28L40 44h-6l-2-8-2 8h-6l8-16z" fill="#fff" opacity="0.6"/>
+            </svg>
+            <div class="title-group">
+                <h1>Strava Unfollowers</h1>
+                <p>Find who doesn't follow you back</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📌 Bookmarklet Installation</h2>
+            <p>Drag this button to your bookmarks bar for one-click access:</p>
+            
+            <div class="instruction">
+                <strong>Drag me to your bookmarks bar ↓</strong>
+            </div>
+            
+            <a class="bookmarklet-btn" href="javascript:(function(){var s=document.createElement('script');s.src='https://raw.githubusercontent.com/YOUR_USERNAME/strava-unfollowers/main/strava-unfollowers.js?'+Date.now();document.body.appendChild(s);})();">
+                🏃 Strava Unfollowers
+            </a>
+            
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #8b949e;">
+                <em>Note: The bookmarklet above won't work until you host the script somewhere (GitHub, etc.). 
+                For now, use the manual method below.</em>
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>🖥️ Manual Usage (Recommended)</h2>
+            <ol class="steps">
+                <li>
+                    <div>
+                        <strong>Log into Strava</strong><br>
+                        Go to <a href="https://www.strava.com" target="_blank" style="color: #fc5200;">www.strava.com</a> and make sure you're logged in
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Open Developer Console</strong><br>
+                        Press <code>Ctrl + Shift + J</code> (Windows) or <code>⌘ + ⌥ + J</code> (Mac)
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Paste the Script</strong><br>
+                        Copy the entire contents of <code>strava-unfollowers.js</code> and paste it into the console
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Press Enter</strong><br>
+                        The Strava Unfollowers interface will appear
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Click "Start Scan"</strong><br>
+                        The tool will scan your followers and following lists
+                    </div>
+                </li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>✨ Features</h2>
+            <ul style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <li>🔍 Smart scanning with rate limiting</li>
+                <li>⏸️ Pause & resume functionality</li>
+                <li>🔖 Whitelist protection</li>
+                <li>🔎 Search & filter athletes</li>
+                <li>📋 Copy list to clipboard</li>
+                <li>⚙️ Configurable delays</li>
+                <li>🎨 Beautiful dark UI</li>
+                <li>💾 Persistent settings</li>
+            </ul>
+        </div>
+        
+        <div class="warning">
+            <h3>⚠️ Disclaimer</h3>
+            <p>
+                This tool is NOT affiliated with Strava. Using automation tools may violate Strava's Terms of Service. 
+                Use at your own risk! The built-in delays help protect your account, but there's no guarantee.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>Made with ❤️ for the Strava community</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="https://www.strava.com" target="_blank">strava.com</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,7 +1,9 @@
 /**
  * Strava Unfollowers Tool
  * Find who doesn't follow you back on Strava
- * 
+ *
+ * © 2025–2026 Sapphire Apps LLC. All Rights Reserved.
+ *
  * Usage:
  * 1. Go to https://www.strava.com and log in
  * 2. Open browser console (F12 or Cmd+Option+J on Mac)
@@ -531,6 +533,23 @@
       opacity: 1;
     }
 
+    .su-profile-link {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #17a2b8;
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(23, 162, 184, 0.1);
+      flex-shrink: 0;
+    }
+
+    .su-profile-link:hover {
+      background: rgba(23, 162, 184, 0.25);
+      color: #20c9e0;
+    }
+
     .su-settings-modal {
       position: fixed;
       top: 0;
@@ -595,6 +614,7 @@
     following: [],
     followers: [],
     nonFollowers: [],
+    fans: [],
     selectedAthletes: new Set(),
     whitelisted: new Set(JSON.parse(localStorage.getItem('strava_unfollowers_whitelist') || '[]')),
     currentTab: 'non_followers',
@@ -620,6 +640,13 @@
   // UTILITIES
   // ============================================
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  const escapeHtml = str => String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 
   function saveWhitelist() {
     localStorage.setItem('strava_unfollowers_whitelist', JSON.stringify([...state.whitelisted]));
@@ -893,6 +920,7 @@
     state.following = [];
     state.followers = [];
     state.nonFollowers = [];
+    state.fans = [];
     render();
     
     // Get athlete ID
@@ -934,14 +962,19 @@
     // Calculate non-followers
     const followerIds = new Set(state.followers.map(f => f.id));
     state.nonFollowers = state.following.filter(a => !followerIds.has(a.id));
-    
+
+    // Calculate fans (people who follow you that you don't follow back)
+    const followingIds = new Set(state.following.map(f => f.id));
+    state.fans = state.followers.filter(a => !followingIds.has(a.id));
+
     console.log(`Non-followers: ${state.nonFollowers.length}`);
-    
+    console.log(`Fans: ${state.fans.length}`);
+
     state.progress = 100;
     state.status = 'results';
     render();
-    
-    showToast(`✓ Scan complete! Found ${state.nonFollowers.length} non-followers out of ${state.following.length} following.`, 'success', 5000);
+
+    showToast(`✓ Scan complete! ${state.nonFollowers.length} don't follow you back · ${state.fans.length} follow you that you don't follow back.`, 'success', 5000);
   }
 
   async function startUnfollow() {
@@ -968,7 +1001,7 @@
       
       count++;
       state.progress = Math.round((count / selectedArray.length) * 100);
-      state.progressText = `Unfollowing ${athlete.name}... (${count}/${selectedArray.length})`;
+      state.progressText = `Unfollowing ${escapeHtml(athlete.name)}... (${count}/${selectedArray.length})`;
       render();
       
       const success = await unfollowAthlete(athlete);
@@ -1018,6 +1051,9 @@
       case 'all_following':
         athletes = state.following;
         break;
+      case 'fans':
+        athletes = state.fans;
+        break;
     }
     
     if (state.searchTerm) {
@@ -1035,14 +1071,29 @@
     const isSelected = state.selectedAthletes.has(athlete.id);
     const isWhitelisted = state.whitelisted.has(athlete.id);
     const isFollower = state.followers.some(f => f.id === athlete.id);
-    
+
+    if (state.currentTab === 'fans') {
+      return `
+        <div class="su-card" data-id="${athlete.id}">
+          <img class="su-avatar" src="${athlete.avatar}" alt="${escapeHtml(athlete.name)}" onerror="this.src='https://d3nn82uaxijpm6.cloudfront.net/assets/avatar/athlete/large-59a8e8528934934c80cc56ea197a256eb5dc71bc6e6451ba5769cdd968c7e232.png'">
+          <div class="su-card-info">
+            <div class="su-card-name">${escapeHtml(athlete.name)}</div>
+            <div class="su-card-location">${escapeHtml(athlete.location || 'No location')}</div>
+            <span style="color: #28a745; font-size: 0.75rem;">✓ Follows you</span>
+          </div>
+          ${athlete.isPremium ? '<span class="su-premium-badge">Premium</span>' : ''}
+          <a class="su-profile-link" href="https://www.strava.com/athletes/${athlete.id}" target="_blank" rel="noopener">View Profile ↗</a>
+        </div>
+      `;
+    }
+
     return `
       <div class="su-card ${isSelected ? 'selected' : ''} ${isWhitelisted ? 'whitelisted' : ''}" data-id="${athlete.id}">
         <div class="su-checkbox"></div>
-        <img class="su-avatar" src="${athlete.avatar}" alt="${athlete.name}" onerror="this.src='https://d3nn82uaxijpm6.cloudfront.net/assets/avatar/athlete/large-59a8e8528934934c80cc56ea197a256eb5dc71bc6e6451ba5769cdd968c7e232.png'">
+        <img class="su-avatar" src="${athlete.avatar}" alt="${escapeHtml(athlete.name)}" onerror="this.src='https://d3nn82uaxijpm6.cloudfront.net/assets/avatar/athlete/large-59a8e8528934934c80cc56ea197a256eb5dc71bc6e6451ba5769cdd968c7e232.png'">
         <div class="su-card-info">
-          <div class="su-card-name">${athlete.name}</div>
-          <div class="su-card-location">${athlete.location || 'No location'}</div>
+          <div class="su-card-name">${escapeHtml(athlete.name)}</div>
+          <div class="su-card-location">${escapeHtml(athlete.location || 'No location')}</div>
           ${isFollower ? '<span style="color: #28a745; font-size: 0.75rem;">✓ Follows you</span>' : '<span style="color: #dc3545; font-size: 0.75rem;">✗ Doesn\'t follow you</span>'}
         </div>
         ${athlete.isPremium ? '<span class="su-premium-badge">Premium</span>' : ''}
@@ -1107,7 +1158,7 @@
           <div class="su-log" style="max-width: 500px; margin: 1rem auto; text-align: left;">
             ${state.unfollowLog.slice(-10).map(log => `
               <div class="su-log-entry ${log.success ? 'success' : 'error'}">
-                ${log.success ? '✓' : '✗'} ${log.athlete.name}
+                ${log.success ? '✓' : '✗'} ${escapeHtml(log.athlete.name)}
               </div>
             `).join('')}
           </div>
@@ -1133,23 +1184,29 @@
               <div class="su-stat-value" style="color: #28a745;">${state.whitelisted.size}</div>
               <div class="su-stat-label">Whitelisted</div>
             </div>
+            <div class="su-stat-card" style="grid-column: span 2;">
+              <div class="su-stat-value" style="color: #17a2b8;">${state.fans.length}</div>
+              <div class="su-stat-label">Fans</div>
+            </div>
           </div>
-          
+
           <div>
             <div class="su-section-title">Search</div>
             <input type="text" class="su-search" placeholder="Search by name or location..." value="${state.searchTerm}" oninput="window.stravaUnfollowers.setSearch(this.value)">
           </div>
-          
-          <div>
-            <div class="su-section-title">Bulk Actions</div>
-            <div class="su-bulk-actions">
-              <button class="su-bulk-btn" onclick="window.stravaUnfollowers.selectAll()">Select All</button>
-              <button class="su-bulk-btn" onclick="window.stravaUnfollowers.selectPage()">Select Page</button>
-              <button class="su-bulk-btn" onclick="window.stravaUnfollowers.deselectAll()">Deselect All</button>
+
+          ${state.currentTab !== 'fans' ? `
+            <div>
+              <div class="su-section-title">Bulk Actions</div>
+              <div class="su-bulk-actions">
+                <button class="su-bulk-btn" onclick="window.stravaUnfollowers.selectAll()">Select All</button>
+                <button class="su-bulk-btn" onclick="window.stravaUnfollowers.selectPage()">Select Page</button>
+                <button class="su-bulk-btn" onclick="window.stravaUnfollowers.deselectAll()">Deselect All</button>
+              </div>
             </div>
-          </div>
-          
-          ${state.selectedAthletes.size > 0 ? `
+          ` : ''}
+
+          ${state.currentTab !== 'fans' && state.selectedAthletes.size > 0 ? `
             <div>
               <button class="su-btn su-btn-danger" style="width: 100%;" onclick="window.stravaUnfollowers.startUnfollow()">
                 🗑️ Unfollow Selected (${state.selectedAthletes.size})
@@ -1175,6 +1232,9 @@
             <button class="su-tab ${state.currentTab === 'non_followers' ? 'active' : ''}" onclick="window.stravaUnfollowers.setTab('non_followers')">
               Non-Followers (${state.nonFollowers.filter(a => !state.whitelisted.has(a.id)).length})
             </button>
+            <button class="su-tab ${state.currentTab === 'fans' ? 'active' : ''}" title="People who follow you, but you don't follow back" onclick="window.stravaUnfollowers.setTab('fans')">
+              Fans (${state.fans.length})
+            </button>
             <button class="su-tab ${state.currentTab === 'whitelisted' ? 'active' : ''}" onclick="window.stravaUnfollowers.setTab('whitelisted')">
               Whitelisted (${state.nonFollowers.filter(a => state.whitelisted.has(a.id)).length})
             </button>
@@ -1187,7 +1247,7 @@
             <div class="su-empty">
               <div class="su-empty-icon">🎉</div>
               <h3 style="color: white;">No athletes found</h3>
-              <p>${state.currentTab === 'non_followers' ? 'Everyone you follow, follows you back!' : 'No matching athletes'}</p>
+              <p>${state.currentTab === 'non_followers' && !state.searchTerm ? 'Everyone you follow, follows you back!' : state.currentTab === 'fans' && !state.searchTerm ? 'No fans here — you follow back everyone who follows you!' : 'No matching athletes'}</p>
             </div>
           ` : `
             <div class="su-grid">
@@ -1231,7 +1291,12 @@
     overlay.querySelectorAll('.su-card').forEach(card => {
       card.addEventListener('click', (e) => {
         if (e.target.closest('.su-whitelist-btn')) return;
+        if (e.target.closest('.su-profile-link')) return;
         const id = card.dataset.id;
+        if (state.currentTab === 'fans') {
+          window.open(`https://www.strava.com/athletes/${id}`, '_blank', 'noopener');
+          return;
+        }
         toggleSelection(id);
       });
     });
@@ -1287,6 +1352,7 @@
   // EVENT HANDLERS
   // ============================================
   function toggleSelection(id) {
+    if (state.currentTab === 'fans') return;
     if (state.selectedAthletes.has(id)) {
       state.selectedAthletes.delete(id);
     } else {
@@ -1307,6 +1373,7 @@
   }
 
   function selectAll() {
+    if (state.currentTab === 'fans') return;
     const athletes = getFilteredAthletes();
     athletes.forEach(a => {
       if (!state.whitelisted.has(a.id)) {
@@ -1317,6 +1384,7 @@
   }
 
   function selectPage() {
+    if (state.currentTab === 'fans') return;
     const athletes = getFilteredAthletes();
     const startIdx = (state.page - 1) * state.itemsPerPage;
     const pageAthletes = athletes.slice(startIdx, startIdx + state.itemsPerPage);

@@ -3,185 +3,529 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strava Unfollowers - Installation</title>
+    <title>Strava Unfollowers — Easy Install</title>
+    <meta name="description" content="See who doesn't follow you back on Strava — and who you don't follow back. Free, runs only in your browser.">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
+        html { scroll-behavior: smooth; }
+
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1f25 100%);
             min-height: 100vh;
             color: #e6edf3;
-            padding: 2rem;
+            padding: 2.5rem 1.25rem 3rem;
             display: flex;
             justify-content: center;
+            line-height: 1.6;
         }
-        
-        .container { max-width: 800px; width: 100%; }
-        
-        .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; }
-        .logo { width: 64px; height: 64px; }
-        .title-group h1 { font-size: 2rem; font-weight: 700; color: #fc5200; }
-        .title-group p { color: #8b949e; }
-        
+
+        .container { max-width: 760px; width: 100%; }
+
+        /* ---------- Header ---------- */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+        .logo { width: 64px; height: 64px; flex-shrink: 0; }
+        .title-group h1 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: #fc5200;
+            line-height: 1.2;
+        }
+        .title-group p {
+            color: #b6c0ca;
+            font-size: 1.1rem;
+            margin-top: 0.35rem;
+        }
+
+        /* ---------- Desktop-only notice ---------- */
+        .notice {
+            background: rgba(252, 82, 0, 0.12);
+            border: 1px solid rgba(252, 82, 0, 0.35);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 2.5rem;
+            color: #ffd9bd;
+            font-size: 1.05rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* ---------- Cards / sections ---------- */
         .section {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 18px;
             padding: 2rem;
             margin-bottom: 2rem;
         }
-        
+        .section h2 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .section .sub {
+            color: #8b949e;
+            margin-bottom: 1.75rem;
+            font-size: 1rem;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(252, 82, 0, 0.15);
+            color: #fc7a33;
+            border: 1px solid rgba(252, 82, 0, 0.4);
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ---------- Numbered steps ---------- */
+        .step {
+            display: flex;
+            gap: 1.1rem;
+            margin-bottom: 1.6rem;
+        }
+        .step:last-child { margin-bottom: 0; }
+        .step-num {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fc5200 0%, #e04800 100%);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.1rem;
+        }
+        .step-body { flex: 1; min-width: 0; }
+        .step-body h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .step-body p {
+            color: #aab4be;
+            font-size: 0.98rem;
+        }
+        .step-body p + p { margin-top: 0.4rem; }
+
+        kbd {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85em;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-bottom-width: 2px;
+            border-radius: 6px;
+            padding: 0.1em 0.45em;
+            white-space: nowrap;
+            color: #e6edf3;
+        }
+
+        /* ---------- Draggable bookmarklet button ---------- */
+        .drag-zone {
+            text-align: center;
+            padding: 1.25rem 0 0.5rem;
+        }
         .bookmarklet-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 0.5rem;
             background: linear-gradient(135deg, #fc5200 0%, #e04800 100%);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 12px;
+            color: #fff;
+            padding: 1.1rem 2.25rem;
+            border-radius: 14px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.2s ease;
+            font-weight: 700;
+            font-size: 1.2rem;
             cursor: grab;
-            box-shadow: 0 4px 20px rgba(252, 82, 0, 0.3);
-            margin-bottom: 1rem;
+            box-shadow: 0 4px 24px rgba(252, 82, 0, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            user-select: none;
         }
-        
         .bookmarklet-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(252, 82, 0, 0.4);
+            box-shadow: 0 10px 40px rgba(252, 82, 0, 0.45);
+        }
+        .bookmarklet-btn:active { cursor: grabbing; }
+        .drag-hint {
+            margin-top: 0.85rem;
+            color: #8b949e;
+            font-size: 0.92rem;
+        }
+        .click-warning {
+            margin-top: 0.6rem;
+            color: #f0b429;
+            font-size: 0.92rem;
+            font-weight: 600;
+            min-height: 1.4rem;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .copy-btn {
+        /* ---------- Collapsible fallback ---------- */
+        details {
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        summary {
+            cursor: pointer;
+            padding: 0.9rem 1.1rem;
+            font-weight: 600;
+            color: #b6c0ca;
+            list-style: none;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::before {
+            content: '▸ ';
+            color: #fc5200;
+        }
+        details[open] summary::before { content: '▾ '; }
+        .details-body {
+            padding: 0 1.1rem 1.1rem;
+            color: #aab4be;
+            font-size: 0.95rem;
+        }
+        .code-box {
+            width: 100%;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            color: #d7dee5;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 0.8rem;
+            margin: 0.75rem 0;
+            resize: none;
+            word-break: break-all;
+            line-height: 1.5;
+            height: 7.5rem;
+        }
+        .code-box:focus { outline: 2px solid rgba(252, 82, 0, 0.5); }
+
+        /* ---------- Buttons ---------- */
+        .action-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            padding: 1rem 2rem;
+            gap: 0.5rem;
+            font-family: 'DM Sans', sans-serif;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 0.8rem 1.6rem;
             border-radius: 12px;
-            text-decoration: none;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.2s ease;
+            font-size: 1rem;
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.2);
-            width: 100%;
-            max-width: 300px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background 0.15s ease, border-color 0.15s ease;
         }
-
-        .copy-btn:hover { background: rgba(255,255,255,0.15); border-color: white; }
-        
-        .instruction {
-            background: rgba(252, 82, 0, 0.1);
-            border-left: 3px solid #fc5200;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 0 8px 8px 0;
-            color: #ffcea8;
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.5);
         }
+        .action-btn.primary {
+            background: linear-gradient(135deg, #fc5200 0%, #e04800 100%);
+            border: none;
+            box-shadow: 0 4px 18px rgba(252, 82, 0, 0.3);
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+        }
+        .action-btn.primary:hover { box-shadow: 0 8px 28px rgba(252, 82, 0, 0.4); }
 
-        .success-message {
-            color: #2ea043;
-            margin-top: 1rem;
+        .status-msg {
+            margin-top: 0.85rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            min-height: 1.5rem;
             opacity: 0;
             transition: opacity 0.3s;
-            font-weight: bold;
-            height: 1.5rem;
         }
-        
-        .disclaimer {
-            font-size: 0.8rem;
-            color: #6e7681;
-            text-align: center;
-            margin-top: 3rem;
-            line-height: 1.5;
+        .status-msg.ok { color: #3fb950; }
+        .status-msg.err { color: #f85149; }
+        .status-msg a { color: #fc7a33; }
+
+        /* ---------- Callout ---------- */
+        .callout {
+            background: rgba(240, 180, 41, 0.1);
+            border-left: 3px solid #f0b429;
+            border-radius: 0 10px 10px 0;
+            padding: 0.9rem 1.1rem;
+            margin-top: 0.75rem;
+            color: #ffe1a0;
+            font-size: 0.95rem;
+        }
+        .callout strong { color: #ffd66e; }
+        .callout code {
+            font-family: 'Space Mono', monospace;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 6px;
+            padding: 0.05em 0.4em;
+            font-size: 0.88em;
+            color: #fff;
         }
 
-        ol { margin-left: 1.5rem; color: #8b949e; line-height: 1.8; }
-        li { margin-bottom: 0.5rem; }
+        /* ---------- Trust section ---------- */
+        .trust-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        .trust-list li {
+            display: flex;
+            gap: 0.7rem;
+            margin-bottom: 0.75rem;
+            color: #aab4be;
+            font-size: 0.98rem;
+        }
+        .trust-list li::before {
+            content: '✓';
+            color: #3fb950;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
         a { color: #fc5200; text-decoration: none; }
         a:hover { text-decoration: underline; }
+
+        /* ---------- Footer ---------- */
+        .footer {
+            text-align: center;
+            color: #6e7681;
+            font-size: 0.85rem;
+            margin-top: 2.5rem;
+            line-height: 1.7;
+        }
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 560px) {
+            body { padding: 1.5rem 1rem 2rem; }
+            .section { padding: 1.4rem 1.1rem; }
+            .title-group h1 { font-size: 1.6rem; }
+            .title-group p { font-size: 1rem; }
+            .logo { width: 52px; height: 52px; }
+            .bookmarklet-btn { font-size: 1.05rem; padding: 1rem 1.5rem; }
+            .step { gap: 0.85rem; }
+            .step-num { width: 32px; height: 32px; min-width: 32px; font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+
+        <!-- 1. Header -->
         <div class="header">
-            <svg class="logo" viewBox="0 0 64 64" fill="none">
+            <svg class="logo" viewBox="0 0 64 64" fill="none" aria-hidden="true">
                 <circle cx="32" cy="32" r="30" fill="#fc5200"/>
                 <path d="M32 16L24 44h6l2-12 2 12h6L32 16z" fill="white"/>
             </svg>
             <div class="title-group">
                 <h1>Strava Unfollowers</h1>
-                <p>Find who doesn't follow you back</p>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>📌 Method 1: Bookmarklet (Easiest)</h2>
-            <p style="margin: 1rem 0; color: #8b949e;">Drag this button to your bookmarks bar:</p>
-            
-            <div style="text-align: center;">
-                <a class="bookmarklet-btn" href="javascript:(function(){var s=document.createElement('script');s.src='https://raw.githubusercontent.com/bardmyway/strava-unfollowers/main/strava-unfollowers.js?v='+Date.now();document.body.appendChild(s);})();">
-                    🏃 Strava Unfollowers
-                </a>
-            </div>
-            
-            <div class="instruction">
-                <strong>⬆️ Drag the button above to your Bookmarks Bar</strong>
+                <p>See who doesn't follow you back — and who you don't follow back.</p>
             </div>
         </div>
 
+        <!-- 2. Desktop-only notice -->
+        <div class="notice">
+            💻 Works on computers only (Chrome, Edge, Firefox, Safari) — not on phones or tablets.
+        </div>
+
+        <!-- 3. Method 1: Bookmark button -->
         <div class="section">
-            <h2>📝 Method 2: Manual Copy</h2>
-            <p style="margin: 1rem 0; color: #8b949e;">Click below to copy the script code automatically:</p>
-            
-            <div style="text-align: center;">
-                <button class="copy-btn" onclick="copyScript()">📋 Copy Script Code</button>
-                <div id="copy-status" class="success-message">✓ Copied to clipboard!</div>
+            <span class="badge">Method 1 · Recommended</span>
+            <h2>The Bookmark Button</h2>
+            <p class="sub">Set it up once, then it's one click whenever you want to use it.</p>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h3>Make your bookmarks bar visible</h3>
+                    <p>The bookmarks bar is the row of saved-page shortcuts just under your browser's address bar.</p>
+                    <p>If you don't see it, press <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> on a Mac, or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> on Windows.</p>
+                </div>
             </div>
 
-            <p style="margin-top: 1rem; font-size: 0.85rem; color: #8b949e; text-align: center;">
-                Trust Check: <a href="https://raw.githubusercontent.com/bardmyway/strava-unfollowers/main/strava-unfollowers.js" target="_blank">View raw source code</a> to verify it is safe.
-            </p>
-        </div>
-        
-        <div class="section">
-            <h2>🖥️ How to Use</h2>
-            <ol>
-                <li>Log in to <a href="https://www.strava.com" target="_blank">Strava.com</a></li>
-                <li><strong>Method 1:</strong> Click the bookmark you just created.</li>
-                <li><strong>Method 2:</strong> Open Developer Console (<code>Cmd+Option+J</code> or <code>Ctrl+Shift+J</code>) and paste the code.</li>
-            </ol>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h3>Drag this orange button up onto that bar</h3>
+                    <p>Press and hold the button, move it onto your bookmarks bar, and let go. It becomes a new bookmark.</p>
+                    <div class="drag-zone">
+                        <a class="bookmarklet-btn" id="bm-link" href="javascript:(function(){var s=document.createElement('script');s.src='https://bardmyway.github.io/strava-unfollowers/strava-unfollowers.js?v='+Date.now();document.body.appendChild(s);})();">
+                            🏃 Strava Unfollowers
+                        </a>
+                        <p class="drag-hint">⬆️ Drag me to your bookmarks bar — don't click me here.</p>
+                        <p class="click-warning" id="click-warning">That button is for dragging, not clicking. Drag it up to your bookmarks bar.</p>
+                    </div>
+
+                    <details>
+                        <summary>Can't drag the button? Add it by hand instead</summary>
+                        <div class="details-body">
+                            <p>1. Right-click your bookmarks bar and choose <strong>"Add page…"</strong> (or "Add bookmark…"). Name it <strong>Strava Unfollowers</strong>.</p>
+                            <p>2. Copy the code below and paste it into the <strong>URL</strong> (address) field, then save.</p>
+                            <textarea class="code-box" id="bm-code" readonly spellcheck="false" aria-label="Bookmarklet code"></textarea>
+                            <button class="action-btn" onclick="copyBookmarkletCode()">📋 Copy this code</button>
+                            <div class="status-msg" id="bm-copy-status"></div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h3>Go to Strava and log in</h3>
+                    <p>Open <a href="https://www.strava.com" target="_blank" rel="noopener">strava.com</a> in the same browser and sign in to your account.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                    <h3>Click your new "Strava Unfollowers" bookmark</h3>
+                    <p>While you're on the Strava page, click the bookmark you just created. The tool opens right on top of the page.</p>
+                </div>
+            </div>
         </div>
 
-        <div class="disclaimer">
-            <p><strong>Disclaimer:</strong> This tool is not affiliated, associated, authorized, endorsed by, or officially connected with Strava Inc.</p>
-            <p>© 2025 bardmyway. All Rights Reserved.</p>
+        <!-- 4. Method 2: Copy & paste -->
+        <div class="section">
+            <span class="badge">Method 2</span>
+            <h2>Copy &amp; Paste (no bookmark needed)</h2>
+            <p class="sub">Takes about a minute. Nothing gets installed or saved.</p>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h3>Copy the code</h3>
+                    <p>Click the button below — it copies the whole tool to your clipboard.</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="action-btn primary" onclick="copyScript()">📋 Copy the code</button>
+                        <div class="status-msg" id="copy-status"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h3>Go to Strava and log in</h3>
+                    <p>Open <a href="https://www.strava.com" target="_blank" rel="noopener">strava.com</a> and sign in to your account.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h3>Open the browser console</h3>
+                    <p>The console is a hidden text box built into every browser where you can run small programs like this one.</p>
+                    <p>Press <kbd>F12</kbd>, or <kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>J</kbd> on a Mac, or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd> on Windows. A panel opens at the side or bottom of the page.</p>
+                    <p>Using <strong>Safari</strong>? Use Method 1 instead — Safari hides its console unless you turn on a developer setting.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                    <h3>Paste and press Enter</h3>
+                    <p>Click inside the console, paste (<kbd>Cmd</kbd>+<kbd>V</kbd> or <kbd>Ctrl</kbd>+<kbd>V</kbd>), and press <kbd>Enter</kbd>. The tool opens on top of the page.</p>
+                    <div class="callout">
+                        <strong>⚠️ If Chrome blocks your paste:</strong> the first time, Chrome may show a warning and refuse to paste. That's normal. Type the words <code>allow pasting</code> into the console, press <kbd>Enter</kbd>, then paste again — it will work.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Trust & safety -->
+        <div class="section">
+            <h2>🔒 Is this safe?</h2>
+            <ul class="trust-list">
+                <li>Runs entirely in your own browser, on your own Strava page. Nothing is installed.</li>
+                <li>Never asks for your password — you're already logged in to Strava yourself.</li>
+                <li>Sends nothing to any server. No tracking, no data collection, no account access.</li>
+                <li>The code is fully open for inspection: browse the <a href="https://github.com/bardmyway/strava-unfollowers" target="_blank" rel="noopener">GitHub repository</a> or read the <a href="https://raw.githubusercontent.com/bardmyway/strava-unfollowers/main/strava-unfollowers.js" target="_blank" rel="noopener">full source code</a>.</li>
+            </ul>
+        </div>
+
+        <!-- 6. Footer -->
+        <div class="footer">
+            <p>This tool is not affiliated, associated, authorized, endorsed by, or officially connected with Strava Inc.</p>
+            <p>© 2025–2026 Sapphire Apps LLC. All Rights Reserved.</p>
         </div>
     </div>
 
     <script>
+        // Fill the manual-install box with the exact same code as the draggable button,
+        // so the two can never drift apart.
+        var bmLink = document.getElementById('bm-link');
+        var bmCode = bmLink.getAttribute('href');
+        document.getElementById('bm-code').value = bmCode;
+
+        // Clicking the bookmarklet on THIS page would do nothing useful
+        // (the tool only runs on strava.com) — gently redirect people to dragging.
+        bmLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            var w = document.getElementById('click-warning');
+            w.style.opacity = '1';
+            setTimeout(function () { w.style.opacity = '0'; }, 4000);
+        });
+
+        // Select-all on focus makes manual copying easy.
+        document.getElementById('bm-code').addEventListener('focus', function () {
+            this.select();
+        });
+
+        function showStatus(el, message, isError) {
+            el.textContent = message;
+            el.className = 'status-msg ' + (isError ? 'err' : 'ok');
+            el.style.opacity = '1';
+            if (!isError) {
+                setTimeout(function () { el.style.opacity = '0'; }, 3000);
+            }
+        }
+
+        function copyBookmarkletCode() {
+            var statusEl = document.getElementById('bm-copy-status');
+            navigator.clipboard.writeText(bmCode).then(function () {
+                showStatus(statusEl, '✓ Copied! Now paste it as the bookmark\'s URL.', false);
+            }).catch(function () {
+                var box = document.getElementById('bm-code');
+                box.focus();
+                box.select();
+                showStatus(statusEl, 'Automatic copy was blocked — the code is selected above, press Cmd+C / Ctrl+C.', true);
+            });
+        }
+
         async function copyScript() {
-            const statusEl = document.getElementById('copy-status');
+            var statusEl = document.getElementById('copy-status');
             try {
-                // Fetches the raw code from your repo so it's always up to date
-                const response = await fetch('https://raw.githubusercontent.com/bardmyway/strava-unfollowers/main/strava-unfollowers.js');
-                if (!response.ok) throw new Error('Network response was not ok');
-                const text = await response.text();
-                
+                // Same-origin fetch from this GitHub Pages site, with a
+                // cache-buster so you always get the latest version.
+                var response = await fetch('strava-unfollowers.js?v=' + Date.now());
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                var text = await response.text();
                 await navigator.clipboard.writeText(text);
-                
-                statusEl.style.opacity = '1';
-                setTimeout(() => { statusEl.style.opacity = '0'; }, 3000);
+                showStatus(statusEl, '✓ Copied! Now go to strava.com (step 2).', false);
             } catch (err) {
-                console.error('Failed to copy', err);
-                statusEl.textContent = '❌ Failed to copy. Please use the "View raw source" link.';
-                statusEl.style.color = '#da3633';
+                statusEl.innerHTML = 'Couldn\'t copy automatically. Please open ' +
+                    '<a href="https://bardmyway.github.io/strava-unfollowers/strava-unfollowers.js" target="_blank" rel="noopener">the code page</a>' +
+                    ', select everything (<kbd>Cmd</kbd>+<kbd>A</kbd> / <kbd>Ctrl</kbd>+<kbd>A</kbd>), copy it (<kbd>Cmd</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>C</kbd>), then continue with step 2.';
+                statusEl.className = 'status-msg err';
                 statusEl.style.opacity = '1';
             }
         }

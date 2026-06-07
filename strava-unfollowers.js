@@ -421,6 +421,7 @@
     }
 
     .su-initial-screen {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -449,6 +450,7 @@
     }
 
     .su-scanning-status {
+      flex: 1;
       text-align: center;
       padding: 2rem;
     }

@@ -2,7 +2,7 @@
  * Strava Unfollowers Tool
  * Find who doesn't follow you back on Strava
  *
- * © 2025–2026 Sapphire Apps LLC. All Rights Reserved.
+ * © 2025–2026 Alexander Bardachenko. All Rights Reserved.
  *
  * Usage:
  * 1. Go to https://www.strava.com and log in

@@ -93,6 +93,6 @@ This tool is not affiliated, associated, authorized, endorsed by, or officially 
 
 ## 📄 License
 
-**© 2025–2026 Sapphire Apps LLC. All Rights Reserved.**
+**© 2025–2026 Alexander Bardachenko. All Rights Reserved.**
 
 This project is provided for personal use only. Redistribution, commercial use, or modification without permission is prohibited.
